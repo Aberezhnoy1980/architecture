@@ -16,7 +16,7 @@ public class InitialWebServer {
     private static String WWW = "/Users/alex/Documents/Study/Portfolio/architecture/www";
 
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8088)) {
+        try (ServerSocket serverSocket = new ServerSocket(8089)) {
             System.out.println("Server started");
 
             while (true) {
@@ -50,7 +50,7 @@ public class InitialWebServer {
                 output.println("HTTP/1.1 404 NOT FOUND");
                 output.println("Content-type: text/html; charset=utf-8");
                 output.println();
-                output.println("<h1>File not found!<h1>");
+                output.println("<h1>File not found!!!<h1>");
                 output.flush();
                 return;
             }

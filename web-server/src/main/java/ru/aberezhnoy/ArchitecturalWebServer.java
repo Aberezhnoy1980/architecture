@@ -19,7 +19,7 @@ public class ArchitecturalWebServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected!");
 
-                new Thread(new RequestHandler(new SocketService(socket), new FileService(WWW, "index.html"))).start();
+                new Thread(new RequestHandler(new SocketService(socket), new FileService(WWW))).start();
             }
         } catch (IOException e) {
             e.printStackTrace();

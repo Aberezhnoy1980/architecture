@@ -4,6 +4,7 @@ import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.SocketService;
 
 import java.io.IOException;
+import java.util.Deque;
 
 public class RequestHandler implements Runnable {
 
@@ -18,51 +19,31 @@ public class RequestHandler implements Runnable {
 
     @Override
     public void run() {
-//        try (BufferedReader input = new BufferedReader(
-//                new InputStreamReader(
-//                        socket.getInputStream(), StandardCharsets.UTF_8));
-//             PrintWriter output = new PrintWriter(socket.getOutputStream())
-//        ) {
-//            while (!input.ready()) ;
-
-
-//            String firstLine = input.readLine();
-        String firstLine = socketService.readRequest();
+        Deque<String> rawRequest = socketService.readRequest();
+        String firstLine = rawRequest.pollFirst();
         String[] parts = firstLine.split(" ");
-//            System.out.println(firstLine);
-//            while (input.ready()) {
-//                System.out.println(input.readLine());
-//            }
-//
-//            Path path = Paths.get(folder, parts[1]);
+
         if (!fileService.exists(parts[1])) {
-            String response =
-                    "HTTP/1.1 404 NOT FOUND\n" +
-                            "Content-type: text/html; charset=utf-8\n" +
-                            "\n" +
-                            "<h1>File not found!<h1>";
-            socketService.writeResponse(response);
-//                output.println("HTTP/1.1 404 NOT FOUND");
-//                output.println("Content-type: text/html; charset=utf-8");
-//                output.println();
-//                output.println("<h1>File not found!<h1>");
-//                output.flush();
+            String rawResponse = "HTTP/1.1 404 NOT FOUND\n" +
+                    "Content-type: text/html; charset=utf-8\n" +
+                    "\n" +
+                    "<h2>File not found!<h2>";
+            socketService.writeResponse(rawResponse);
             return;
+        } else if (fileService.isDirectory(parts[1])) {
+            String rawResponse = "HTTP/1.1 500 INTERNAL SERVER ERROR\n" +
+                    "Content-type: text/html; charset=utf-8\n" +
+                    "\n" +
+                    "<H2>" + fileService.readFile(parts[1]) + "<H2>";
+            socketService.writeResponse(rawResponse);
+            return;
+        } else {
+            String rawResponse = "HTTP/1.1 200 OK\n" +
+                    "Content-type: text/html; charset=utf-8\n" +
+                    "\n" +
+                    fileService.readFile(parts[1]);
+            socketService.writeResponse(rawResponse);
         }
-
-        String response =
-                "HTTP/1.1 200 OK\n" +
-                        "Content-type: text/html; charset=utf-8\n" +
-                        "\n" +
-                        fileService.readFile(parts[1]);
-        socketService.writeResponse(response);
-
-//            output.println("HTTP/1.1 200 OK");
-//            output.println("Content-type: text/html; charset=utf-8");
-//            output.println();
-
-
-//        Files.newBufferedReader(path).transferTo(output);
 
         try {
             socketService.close();

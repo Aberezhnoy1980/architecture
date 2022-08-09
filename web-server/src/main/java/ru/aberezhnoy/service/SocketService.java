@@ -3,6 +3,8 @@ package ru.aberezhnoy.service;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Deque;
+import java.util.LinkedList;
 
 public class SocketService implements Closeable {
 
@@ -12,33 +14,34 @@ public class SocketService implements Closeable {
         this.socket = socket;
     }
 
-    public String readRequest() {
-        try (BufferedReader input = new BufferedReader(
-                new InputStreamReader(
-                        socket.getInputStream(), StandardCharsets.UTF_8));
-        ) {
+    public Deque<String> readRequest() {
+        try {
+            BufferedReader input = new BufferedReader(
+                    new InputStreamReader(
+                            socket.getInputStream(), StandardCharsets.UTF_8));
+
             while (!input.ready()) ;
 
-            String firstLine = input.readLine();
-//            String[] parts = firstLine.split(" ");
-            System.out.println(firstLine);
+
+            Deque<String> response = new LinkedList<>();
             while (input.ready()) {
-                System.out.println(input.readLine());
+                String line = input.readLine();
+                System.out.println(line);
+                response.add(line);
             }
-            return input.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return response;
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
         }
-        return toString();
     }
 
-    public void writeResponse(String response) {
+    public void writeResponse(String rawResponse) {
         try {
             PrintWriter output = new PrintWriter(socket.getOutputStream());
-            output.print(response);
+            output.print(rawResponse);
             output.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
         }
     }
 
