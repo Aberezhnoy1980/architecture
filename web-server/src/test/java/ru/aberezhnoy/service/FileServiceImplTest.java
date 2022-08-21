@@ -3,13 +3,11 @@ package ru.aberezhnoy.service;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileServiceTest {
+public class FileServiceImplTest {
 
 
 
@@ -24,7 +22,7 @@ public class FileServiceTest {
 //        } catch (IOException e) {
 //            System.out.println(e.getMessage());
 //        }
-        FileService fs = new FileService("src/test/resources");
+        FileServiceImpl fs = new FileServiceImpl("src/test/resources");
 
         Files.readAllLines(Path.of("/Users/alex/Documents/Study/Portfolio/architecture/web-server/src/test/resources/test.html")).forEach(sb::append);
 

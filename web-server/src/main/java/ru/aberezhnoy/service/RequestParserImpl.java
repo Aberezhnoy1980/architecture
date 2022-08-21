@@ -1,4 +1,4 @@
-package ru.aberezhnoy;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.domain.HttpRequest;
 
@@ -29,14 +29,14 @@ public class RequestParserImpl implements RequestParser {
             body.append(rawRequest.pollFirst());
         }
 
-//        return HttpRequest.newHttpRequest(method, url, headers, body.toString());
-        return HttpRequest
-                .createBuilder()
-                .setMethod(method)
-                .setUrl(url)
-                .setHeaders(lines[0], lines[1])
-                .setBody(body.toString())
-                .build();
-//        return new HttpRequest(method, url, headers, body.toString()); if use this needs to make constructor public
+        return HttpRequest.newHttpRequest(method, url, headers, body.toString());
+//        return HttpRequest
+//                .createBuilder()
+//                .setMethod(method)
+//                .setUrl(url)
+//                .setHeaders(lines[0], lines[1])
+//                .setBody(body.toString())
+//                .build();
+//        return new HttpRequest(method, url, headers, body.toString()); // when use this needs to make constructor public
     }
 }

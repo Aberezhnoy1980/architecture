@@ -1,4 +1,4 @@
-package ru.aberezhnoy;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.domain.HttpRequest;
 

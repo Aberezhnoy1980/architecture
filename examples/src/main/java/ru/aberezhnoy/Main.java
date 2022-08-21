@@ -1,2 +1,4 @@
-package ru.aberezhnoy;public class Main {
+package ru.aberezhnoy;
+
+public class Main {
 }

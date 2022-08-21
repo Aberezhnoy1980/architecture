@@ -1,4 +1,4 @@
-package ru.aberezhnoy.factories;
+package ru.aberezhnoy.factory;
 
 import ru.aberezhnoy.config.ConfigFromCli;
 import ru.aberezhnoy.config.ConfigFromFile;

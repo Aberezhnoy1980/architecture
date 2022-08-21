@@ -18,6 +18,14 @@ public class HttpResponse {
         this.body = body;
     }
 
+    public static HttpResponse createHttpResponse() {
+        return new HttpResponse();
+    }
+
+    public static Builder createBuilder() {
+        return new Builder();
+    }
+
     public HttpResponseCode getStatusCode() {
         return statusCode;
     }
@@ -40,5 +48,33 @@ public class HttpResponse {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public static class Builder {
+
+        private final HttpResponse httpResponse;
+
+        public Builder() {
+            this.httpResponse = new HttpResponse();
+        }
+
+        public Builder setStatus(HttpResponseCode statusCode) {
+            this.httpResponse.setStatusCode(statusCode);
+            return this;
+        }
+
+        public Builder setHeaders(String key, String value) {
+            this.httpResponse.getHeaders().put(key, value);
+            return this;
+        }
+
+        public Builder setBody(String body) {
+            this.httpResponse.setBody(body);
+            return this;
+        }
+
+        public HttpResponse build() {
+            return httpResponse;
+        }
     }
 }

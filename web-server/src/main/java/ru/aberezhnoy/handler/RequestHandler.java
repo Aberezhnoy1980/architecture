@@ -1,5 +1,7 @@
-package ru.aberezhnoy;
+package ru.aberezhnoy.handler;
 
+import ru.aberezhnoy.service.RequestParser;
+import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;

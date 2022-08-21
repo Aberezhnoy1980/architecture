@@ -1,22 +1,14 @@
-package ru.aberezhnoy.factories;
+package ru.aberezhnoy.factory;
 
-import ru.aberezhnoy.RequestParser;
-import ru.aberezhnoy.RequestParserImpl;
-import ru.aberezhnoy.ResponseSerializer;
-import ru.aberezhnoy.ResponseSerializerImpl;
 import ru.aberezhnoy.config.ConfigFromCli;
 import ru.aberezhnoy.config.ConfigFromFile;
 import ru.aberezhnoy.config.ConfigFromFixedValue;
 import ru.aberezhnoy.config.ServerConfig;
-import ru.aberezhnoy.service.FileService;
-import ru.aberezhnoy.service.FileServiceImpl;
-import ru.aberezhnoy.service.SocketService;
-import ru.aberezhnoy.service.SocketServiceImpl;
+import ru.aberezhnoy.service.*;
 
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Deque;
 
 public final class WebServerFactory {
     public static ServerConfig createServerConfig(String[] args) {
@@ -45,10 +37,3 @@ public final class WebServerFactory {
         return new ResponseSerializerImpl();
     }
 }
-
-
-
-
-
-
-
