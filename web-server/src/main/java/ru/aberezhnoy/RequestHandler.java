@@ -15,9 +15,9 @@ import java.util.Map;
 
 public class RequestHandler implements Runnable {
 
-    private final SocketService socketService;
+    private final Socket socket;
 
-    private final FileService fileService;
+    private final String folder;
 
     private final RequestParser requestParser;
 
@@ -68,4 +68,3 @@ public class RequestHandler implements Runnable {
         System.out.println("Client disconnected");
     }
 }
-
