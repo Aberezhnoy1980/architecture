@@ -1,8 +1,5 @@
 package ru.aberezhnoy;
 
-import ru.aberezhnoy.service.FileService;
-import ru.aberezhnoy.service.SocketService;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,7 +16,7 @@ public class ArchitecturalWebServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected!");
 
-                new Thread(new RequestHandler(new SocketService(socket), new FileService(WWW))).start();
+                new Thread(new RequestHandler(socket, WWW)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
