@@ -1,56 +1,62 @@
 package ru.aberezhnoy;
 
-import ru.aberezhnoy.service.FileService;
-import ru.aberezhnoy.service.SocketService;
-
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Deque;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class RequestHandler implements Runnable {
 
-    private final SocketService socketService;
+    private final Socket socket;
 
-    private final FileService fileService;
+    private final String folder;
 
-    public RequestHandler(SocketService socketService, FileService fileService) {
-        this.socketService = socketService;
-        this.fileService = fileService;
+    public RequestHandler(Socket socket, String folder) {
+        this.socket = socket;
+        this.folder = folder;
     }
 
     @Override
     public void run() {
-        Deque<String> rawRequest = socketService.readRequest();
-        String firstLine = rawRequest.pollFirst();
-        String[] parts = firstLine.split(" ");
+        try (BufferedReader input = new BufferedReader(
+                new InputStreamReader(
+                        socket.getInputStream(), StandardCharsets.UTF_8));
+             PrintWriter output = new PrintWriter(socket.getOutputStream())
+        ) {
+            while (!input.ready()) ;
 
-        if (!fileService.exists(parts[1])) {
-            String rawResponse = "HTTP/1.1 404 NOT FOUND\n" +
-                    "Content-type: text/html; charset=utf-8\n" +
-                    "\n" +
-                    "<h2>File not found!<h2>";
-            socketService.writeResponse(rawResponse);
-            return;
-        } else if (fileService.isDirectory(parts[1])) {
-            String rawResponse = "HTTP/1.1 500 INTERNAL SERVER ERROR\n" +
-                    "Content-type: text/html; charset=utf-8\n" +
-                    "\n" +
-                    "<H2>" + fileService.readFile(parts[1]) + "<H2>";
-            socketService.writeResponse(rawResponse);
-            return;
-        } else {
-            String rawResponse = "HTTP/1.1 200 OK\n" +
-                    "Content-type: text/html; charset=utf-8\n" +
-                    "\n" +
-                    fileService.readFile(parts[1]);
-            socketService.writeResponse(rawResponse);
-        }
+            String firstLine = input.readLine();
+            String[] parts = firstLine.split(" ");
+            System.out.println(firstLine);
+            while (input.ready()) {
+                System.out.println(input.readLine());
+            }
 
-        try {
-            socketService.close();
-        } catch (IOException exception) {
-            throw new IllegalStateException(exception);
+            Path path = Paths.get(folder, parts[1]);
+            if (!Files.exists(path)) {
+                output.println("HTTP/1.1 404 NOT FOUND");
+                output.println("Content-type: text/html; charset=utf-8");
+                output.println();
+                output.println("<h1>File not found!<h1>");
+                output.flush();
+                return;
+            }
+
+            output.println("HTTP/1.1 200 OK");
+            output.println("Content-type: text/html; charset=utf-8");
+            output.println();
+
+
+            Files.newBufferedReader(path).transferTo(output);
+
+            System.out.println("Client disconnected");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("Client disconnected");
     }
 }
-
