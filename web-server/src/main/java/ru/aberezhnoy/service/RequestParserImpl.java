@@ -33,7 +33,7 @@ public class RequestParserImpl implements RequestParser {
         StringBuilder body = new StringBuilder();
         while (!rawRequest.isEmpty()) {
             builder.setBody(body.append(rawRequest.pollFirst()).toString()); // build on track
-//            body.append(rawRequest.pollFirst()); // construct return expression ta the end
+//            body.append(rawRequest.pollFirst()); // construct return expression at the end
         }
 
         return builder.build();
