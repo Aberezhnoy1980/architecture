@@ -15,19 +15,19 @@ public class RequestParserImpl implements RequestParser {
         builder
                 .setMethod(firstLine[0])
                 .setUrl(firstLine[1]); // build on track
-//        String method = firstLine[0]; // construct return expression ta the end
-//        String url = firstLine[1]; // construct return expression ta the end
+//        String method = firstLine[0]; // construct return expression at the end
+//        String url = firstLine[1]; // construct return expression at the end
 
-//        Map<String, String> headers = new HashMap<>(); //construct return expression ta the end
-//        String[] lines = new String[0]; //construct return expression ta the end
+//        Map<String, String> headers = new HashMap<>(); //construct return expression at the end
+//        String[] lines = new String[0]; //construct return expression at the end
         while (!rawRequest.isEmpty()) {
             String line = rawRequest.pollFirst();
             if (line.isBlank())
                 break;
             String[] headers = line.split(": "); // build on track
             builder.setHeaders(headers[0], headers[1]);
-//            lines = line.split(": "); // construct return expression ta the end
-//            headers.put(lines[0], lines[1]); // construct return expression ta the end
+//            lines = line.split(": "); // construct return expression at the end
+//            headers.put(lines[0], lines[1]); // construct return expression at the end
         }
 
         StringBuilder body = new StringBuilder();
