@@ -1,4 +1,4 @@
-package ru.aberezhnoy;
+package ru.aberezhnoy.ohers;
 
 public abstract class AbstractSum {
     protected int a;

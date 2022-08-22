@@ -10,7 +10,6 @@ public class HttpRequest {
     private String url;
     private String body;
 
-
     private HttpRequest() {
     }
 
@@ -74,6 +73,12 @@ public class HttpRequest {
         }
 
         public HttpRequest build() {
+            if (this.httpRequest.getMethod() == null) {
+                throw new IllegalStateException("Method not defined");
+            }
+            if (this.httpRequest.getUrl() == null) {
+                throw new IllegalStateException("Url not defined");
+            }
             return httpRequest;
         }
     }
