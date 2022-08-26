@@ -1,4 +1,4 @@
-package ru.aberezhnoy.factory;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.ResponseSerializerImpl;

@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Deque;
 import java.util.LinkedList;
 
-public class SocketServiceImpl implements SocketService {
+class SocketServiceImpl implements SocketService {
 
     private final Socket socket;
 

@@ -15,17 +15,14 @@ public class RequestHandler implements Runnable {
 
     private final SocketService socketService;
 
-    private final FileService fileService;
-
     private final RequestParser requestParser;
 
-    private final ResponseSerializer responseSerializer;
+    private final MethodHandler methodHandler;
 
-    public RequestHandler(SocketService socketService, FileService fileService, RequestParser requestParser, ResponseSerializer responseSerializer) {
+    public RequestHandler(SocketService socketService, RequestParser requestParser, MethodHandler methodHandler) {
         this.socketService = socketService;
-        this.fileService = fileService;
         this.requestParser = requestParser;
-        this.responseSerializer = responseSerializer;
+        this.methodHandler = methodHandler;
     }
 
     @Override
@@ -33,37 +30,7 @@ public class RequestHandler implements Runnable {
         Deque<String> rawRequest = socketService.readRequest();
         HttpRequest httpRequest = requestParser.parseRequest(rawRequest);
 
-        if (!fileService.exists(httpRequest.getUrl())) {
-            socketService
-                    .writeResponse(responseSerializer
-                            .serializeResponse(HttpResponse
-                                    .createBuilder()
-                                    .setStatus(HttpResponseCode.NOT_FOUND)
-                                    .setHeaders("Content-Type", "text/html; charset=utf-8")
-                                    .setBody("<H2>File not found!<H2>")
-                                    .build()));
-            return;
-        } else if (fileService.isDirectory(httpRequest.getUrl())) {
-            socketService
-                    .writeResponse(responseSerializer
-                            .serializeResponse(HttpResponse
-                                    .createBuilder()
-                                    .setStatus(HttpResponseCode.BAD_REQUEST)
-                                    .setHeaders("Content-Type", "text/html; charset=utf-8")
-                                    .setBody("<H2>" + fileService.readFile(httpRequest.getUrl()) + "<H2>")
-                                    .build()));
-            return;
-        } else {
-            socketService
-                    .writeResponse(responseSerializer
-                            .serializeResponse(HttpResponse
-                                    .createBuilder()
-                                    .setStatus(HttpResponseCode.OK)
-                                    .setHeaders("Content-Type", "text/html; charset=utf-8")
-                                    .setBody("<H2>" + fileService.readFile(httpRequest.getUrl()) + "<H2>")
-                                    .build()));
-        }
-
+        methodHandler.handle(httpRequest);
         try {
             socketService.close();
         } catch (IOException exception) {

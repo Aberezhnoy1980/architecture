@@ -1,6 +1,6 @@
 package ru.aberezhnoy.config;
 
-public class ConfigFromFixedValue implements ServerConfig {
+class ConfigFromFixedValue implements ServerConfig {
 
     @Override
     public String getUrlHome() {

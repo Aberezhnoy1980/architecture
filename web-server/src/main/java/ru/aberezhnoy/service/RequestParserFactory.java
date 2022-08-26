@@ -1,4 +1,4 @@
-package ru.aberezhnoy.factory;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.service.RequestParser;
 import ru.aberezhnoy.service.RequestParserImpl;

@@ -1,4 +1,4 @@
-package ru.aberezhnoy.factory;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.service.SocketService;
 import ru.aberezhnoy.service.SocketServiceImpl;

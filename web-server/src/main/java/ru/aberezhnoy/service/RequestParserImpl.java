@@ -6,7 +6,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestParserImpl implements RequestParser {
+class RequestParserImpl implements RequestParser {
 
     @Override
     public HttpRequest parseRequest(Deque<String> rawRequest) {

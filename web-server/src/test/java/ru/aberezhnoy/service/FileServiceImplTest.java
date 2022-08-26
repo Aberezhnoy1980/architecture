@@ -22,7 +22,7 @@ public class FileServiceImplTest {
 //        } catch (IOException e) {
 //            System.out.println(e.getMessage());
 //        }
-        FileServiceImpl fs = new FileServiceImpl("src/test/resources");
+        FileService fs = FileServiceFactory.create("src/test/resources");
 
         Files.readAllLines(Path.of("/Users/alex/Documents/Study/Portfolio/architecture/web-server/src/test/resources/test.html")).forEach(sb::append);
 

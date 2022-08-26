@@ -3,13 +3,14 @@ package ru.aberezhnoy;
 import org.junit.Assert;
 import org.junit.Test;
 import ru.aberezhnoy.domain.HttpResponse;
-import ru.aberezhnoy.service.ResponseSerializerImpl;
+import ru.aberezhnoy.service.ResponseSerializer;
+import ru.aberezhnoy.service.ResponseSerializerFactory;
 
 import static ru.aberezhnoy.domain.HttpResponseCode.*;
 
 public class ResponseSerializerTest {
 
-    private final ResponseSerializerImpl responseParser = new ResponseSerializerImpl();
+    private final ResponseSerializer responseParser = ResponseSerializerFactory.create();
 
     @Test
     public void testSerializingNotFound() {
