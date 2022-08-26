@@ -3,7 +3,7 @@ package ru.aberezhnoy.config;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ConfigFromFile implements ServerConfig {
+class ConfigFromFile implements ServerConfig {
 
     private final int port;
 

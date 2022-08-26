@@ -1,8 +1,10 @@
 package ru.aberezhnoy;
 
 import ru.aberezhnoy.config.ServerConfig;
-import ru.aberezhnoy.factory.*;
+import ru.aberezhnoy.config.ServerConfigFactory;
+import ru.aberezhnoy.handler.MethodHandlerFactory;
 import ru.aberezhnoy.handler.RequestHandler;
+import ru.aberezhnoy.service.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -11,7 +13,6 @@ import java.net.Socket;
 public class ArchitecturalWebServer {
 
     public static void main(String[] args) {
-//        ServerConfig config = WebServerFactory.createServerConfig(args);
         ServerConfig config = ServerConfigFactory.create(args);
         try (ServerSocket serverSocket = new ServerSocket(config.getPort())) {
             System.out.println("Server started");
@@ -20,15 +21,15 @@ public class ArchitecturalWebServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("New client connected!");
 
+                SocketService socketService = SocketServiceFactory.create(socket);
+
                 new Thread(new RequestHandler(
-//                        WebServerFactory.createSocketService(socket),
-//                        WebServerFactory.createFileService(config.getUrlHome()),
-//                        WebServerFactory.createRequestParser(),
-//                        WebServerFactory.createResponseSerializer()
-                        SocketServiceFactory.create(socket),
-                        FileServiceFactory.create(config.getUrlHome()),
+                        socketService,
                         RequestParserFactory.create(),
-                        ResponseSerializerFactory.create()
+                        MethodHandlerFactory.create(socketService,
+                                ResponseSerializerFactory.create(),
+                                config,
+                                FileServiceFactory.create(config.getUrlHome()))
                 )).start();
             }
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 package ru.aberezhnoy.config;
 
-public class ConfigFromCli implements ServerConfig {
+class ConfigFromCli implements ServerConfig {
 
     private final String urlHome;
 

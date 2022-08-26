@@ -3,7 +3,8 @@ package ru.aberezhnoy;
 import org.junit.Assert;
 import org.junit.Test;
 import ru.aberezhnoy.domain.HttpRequest;
-import ru.aberezhnoy.service.RequestParserImpl;
+import ru.aberezhnoy.service.RequestParserFactory;
+import ru.aberezhnoy.service.RequestParser;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ public class RequestParserTest {
                     "Connection: keep-alive\n" +
                     "\n";
 
-    private final RequestParserImpl requestParser = new RequestParserImpl();
+    private final RequestParser requestParser = RequestParserFactory.create();
 
     @Test
     public void testParsing() {

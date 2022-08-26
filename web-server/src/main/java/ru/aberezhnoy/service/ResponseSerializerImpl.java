@@ -2,7 +2,7 @@ package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.domain.HttpResponse;
 
-public class ResponseSerializerImpl implements ResponseSerializer {
+class ResponseSerializerImpl implements ResponseSerializer {
 
     @Override
     public String serializeResponse(HttpResponse httpResponse) {

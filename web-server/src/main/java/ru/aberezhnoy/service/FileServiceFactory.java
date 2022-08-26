@@ -1,4 +1,4 @@
-package ru.aberezhnoy.factory;
+package ru.aberezhnoy.service;
 
 import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.FileServiceImpl;
