@@ -6,6 +6,7 @@ import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
 
+import java.lang.annotation.Annotation;
 import java.util.Set;
 
 public final class MethodHandlerFactory {
@@ -19,5 +20,7 @@ public final class MethodHandlerFactory {
 //    public static MethodHandlerImpl createAnnotated() {
 //        Reflections reflections = new Reflections("ru.aberezhnoy.handler");
 //        Set<Class<?>> classes = reflections.getTypesAnnotatedWith(Handler.class);
+//
+//
 //    }
 }
