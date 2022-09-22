@@ -2,6 +2,7 @@ package ru.aberezhnoy;
 
 import ru.aberezhnoy.config.ServerConfig;
 import ru.aberezhnoy.config.ServerConfigFactory;
+import ru.aberezhnoy.handler.AnnotatedMethodHandlerFactory;
 import ru.aberezhnoy.handler.MethodHandlerFactory;
 import ru.aberezhnoy.handler.RequestHandler;
 import ru.aberezhnoy.service.*;
@@ -26,9 +27,8 @@ public class ArchitecturalWebServer {
                 new Thread(new RequestHandler(
                         socketService,
                         RequestParserFactory.create(),
-                        MethodHandlerFactory.create(socketService,
+                        AnnotatedMethodHandlerFactory.create(socketService,
                                 ResponseSerializerFactory.create(),
-                                config,
                                 FileServiceFactory.create(config.getUrlHome()))
                 )).start();
             }

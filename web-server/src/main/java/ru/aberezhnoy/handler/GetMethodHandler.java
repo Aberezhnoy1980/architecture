@@ -1,6 +1,5 @@
 package ru.aberezhnoy.handler;
 
-import ru.aberezhnoy.config.ServerConfig;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
@@ -8,17 +7,16 @@ import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
 
-@Handler(method = "GET", order = 0)
+@Handler(order = 0)
 class GetMethodHandler extends MethodHandlerImpl {
 
     private final FileService fileService;
 
-    public GetMethodHandler(MethodHandlerImpl next,
+    public GetMethodHandler(MethodHandler next,
                             SocketService socketService,
                             ResponseSerializer responseSerializer,
-                            ServerConfig config,
                             FileService fileService) {
-        super("GET", next, socketService, responseSerializer, config);
+        super("GET", next, socketService, responseSerializer);
         this.fileService = fileService;
     }
 

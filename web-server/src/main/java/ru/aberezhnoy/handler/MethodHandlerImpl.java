@@ -1,6 +1,5 @@
 package ru.aberezhnoy.handler;
 
-import ru.aberezhnoy.config.ServerConfig;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
@@ -9,26 +8,19 @@ import ru.aberezhnoy.service.SocketService;
 
 abstract class MethodHandlerImpl implements MethodHandler {
 
-    private final String method;
-
-    private final MethodHandlerImpl next;
-
     protected final SocketService socketService;
-
     protected final ResponseSerializer responseSerializer;
-
-    protected final ServerConfig config;
+    private final String method;
+    private final MethodHandler next;
 
     public MethodHandlerImpl(String method,
-                             MethodHandlerImpl next,
+                             MethodHandler next,
                              SocketService socketService,
-                             ResponseSerializer responseSerializer,
-                             ServerConfig config) {
+                             ResponseSerializer responseSerializer) {
         this.method = method;
         this.next = next;
         this.socketService = socketService;
         this.responseSerializer = responseSerializer;
-        this.config = config;
     }
 
     @Override

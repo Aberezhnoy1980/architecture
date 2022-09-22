@@ -25,6 +25,11 @@ public class LessonApp {
                 };
             }
         };
+
+        for (String str : strings) {
+            System.out.println(str);
+        }
+
         for (String str : strings) {
             System.out.println(str);
         }

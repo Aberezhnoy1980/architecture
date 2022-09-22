@@ -1,19 +1,17 @@
 package ru.aberezhnoy.handler;
 
-import ru.aberezhnoy.config.ServerConfig;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
+import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
 
-import java.lang.reflect.Method;
-
-@Handler(method = "POST", order = 1)
+@Handler(order = 1)
 class PostMethodHandler extends MethodHandlerImpl {
 
-    public PostMethodHandler(MethodHandlerImpl next, SocketService socketService, ResponseSerializer responseSerializer, ServerConfig config) {
-        super("POST", next, socketService, responseSerializer, config);
+    public PostMethodHandler(MethodHandler next, SocketService socketService, ResponseSerializer responseSerializer, FileService fileService) {
+        super("POST", next, socketService, responseSerializer);
     }
 
     @Override
