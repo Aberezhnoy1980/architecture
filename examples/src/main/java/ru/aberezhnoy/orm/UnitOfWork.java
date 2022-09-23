@@ -1,19 +1,19 @@
 package ru.aberezhnoy.orm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UnitOfWork {
 
-    private UserMapper userMapper;
+    private final List<User> newUsers = new ArrayList<>();
+    private final List<User> updateUsers = new ArrayList<>();
+    private final List<User> deleteUsers = new ArrayList<>();
+    private final UserMapper userMapper;
 
     public UnitOfWork(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
-
-    private final List<User> newUsers = new ArrayList<>();
-    private final List<User> updateUsers = new ArrayList<>();
-    private final List<User> deleteUsers = new ArrayList<>();
 
     public void registerNew(User user) {
         this.newUsers.add(user);
@@ -28,8 +28,11 @@ public class UnitOfWork {
     }
 
     public void commit() {
-        // begin transaction
-        // do all actions
-        // commit transaction
+        newUsers.forEach(userMapper::insert);
+//        newUsers.clear();
+        for (User u : updateUsers) {
+            userMapper.update(u);
+        }
+        deleteUsers.forEach(userMapper::delete);
     }
 }
