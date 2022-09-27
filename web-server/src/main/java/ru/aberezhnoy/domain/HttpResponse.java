@@ -12,11 +12,11 @@ public class HttpResponse {
     private HttpResponse() {
     }
 
-//    private HttpResponse(HttpResponseCode statusCode, Map<String, String> headers, String body) {
-//        this.statusCode = statusCode;
-//        this.headers = headers;
-//        this.body = body;
-//    }
+    private HttpResponse(HttpResponseCode statusCode, Map<String, String> headers, String body) {
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.body = body;
+    }
 
     public static HttpResponse createHttpResponse() {
         return new HttpResponse();

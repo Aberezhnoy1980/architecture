@@ -3,10 +3,16 @@ package ru.aberezhnoy.handler;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
+import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
 
 abstract class MethodHandlerImpl implements MethodHandler {
+
+    private static final String header = "Content-Type, text/html; charset=utf-8";
+    private String headerKey = "Content-Type";
+    private final String headerValue = "charset=utf-8";
+    private final String body = "<H2>File not found!<H2>";
 
     protected final SocketService socketService;
     protected final ResponseSerializer responseSerializer;
@@ -21,6 +27,9 @@ abstract class MethodHandlerImpl implements MethodHandler {
         this.next = next;
         this.socketService = socketService;
         this.responseSerializer = responseSerializer;
+        this.headerKey = "Content-Type";
+        final String headerValue = "charset=utf-8";
+        final String body = "<H2>File not found!<H2>";
     }
 
     @Override
@@ -34,7 +43,7 @@ abstract class MethodHandlerImpl implements MethodHandler {
         } else {
             response = HttpResponse.createBuilder()
                     .setStatus(HttpResponseCode.METHOD_NOT_ALLOWED)
-                    .setHeaders("Content-Type", "text/html; charset=utf-8")
+                    .setHeaders(headerValue, body)
                     .setBody("<H2>Method not allowed!")
                     .build();
         }
