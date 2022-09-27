@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html :: head">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <h1>Architectures and design patterns course homework checklist</h1>
+            <a class="btn btn-primary" th:href="@{/pr/new}">Add record</a>
+        </div>
+
+
+        <form class="form-inline mt-3" method="get">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="statusName" class="sr-only">Statuses</label>
+                <select class="form-control" id="statusName" name="statusName">
+                    <option th:selected="${param.statusName == null || param.statusName[0].isBlank()}" value="-1">All statuses
+                    </option>
+                    <option th:each="status : ${statuses}"
+                            th:text="${status}"
+                            th:selected="${#strings.equals((param.statusName != null ? param.statusName[0] : ''), #strings.toString(status))}">
+                    </option>
+                </select>
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="number-filter" class="sr-only">Number filter:</label>
+                <input th:value="${param.numberFilter}" type="number" class="form-control"
+                       name="numberFilter" id="number-filter" placeholder="Text a homework number">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Find</button>
+        </form>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th th:replace="fragments/sort_header :: sort_header('Id', 'id')">Id</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Reference', 'reference')">Reference</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Home work #', 'homeWorkNumber')">Homework #</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Description', 'description')">Description</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Status', 'status')">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:unless="${pull_requests.empty}" th:each="pullRequest : ${pull_requests}">
+                    <th scope="row" th:text="${pullRequest.id}">Id</th>
+                    <td th:text="${pullRequest.reference}">Reference</td>
+                    <td th:text="${pullRequest.homeWorkNumber}">Homework #</td>
+                    <td th:text="${pullRequest.description}">Description</td>
+                    <td th:text="${pullRequest.status}">Status</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/pr/{id}(id = ${pullRequest.id})}"><i
+                                class="fas fa-edit"></i></a>
+                        <form class="d-inline" th:method="delete" th:action="@{/pr/{id}(id = ${pullRequest.id})}">
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${pull_requests.empty}">
+                    <td colspan="5">No data available</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li class="page-item"
+                        th:classappend="${pull_requests.first} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/pr(numberFilter=${param.numbberFilter}, page=${1}, size=${param.size}, sort=${param.sort})}"
+                           tabindex="-1">Start</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${pull_requests.first} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/pr(numberFilter=${param.numberFilter}, page=${pull_requests.number}, size=${param.size}, sort=${param.sort})}"
+                           tabindex="-1">Previous</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:each="num : ${#numbers.sequence(1, pull_requests.totalPages)}"
+                        th:classappend="${num == pull_requests.number + 1} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/pr(numberFilter=${param.numberFilter}, statusName=${param.statusName}, page=${num}, size=${param.size}, sort=${param.sort})}"
+                           th:text="${num}">1</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${pull_requests.last} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/pr(numberFilter=${param.numbebrFilter}, page=${pull_requests.number + 2}, size=${param.size}, sort=${param.sort})}">Next</a>
+                    </li>
+
+                    <li class="page-item"
+                        th:classappend="${pull_requests.last} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/pr(numberFilter=${param.numberFilter}, page=${pull_requests.getTotalPages()}, size=${param.size}, sort=${param.sort})}">End</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments/footer.html :: scripts">
+</th:block>
+
+</body>
+</html>
