@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html :: head">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <form th:action="@{/pr}" method="post" th:object="${pr}">
+                <input type="hidden" id="id" name="id" th:field="*{id}">
+
+                <div class="form-group">
+                    <label>Reference</label>
+                    <input th:field="*{reference}" type="text" class="form-control" id="reference" name="reference"
+                           placeholder="Enter pull request reference">
+                    <p class="text-danger" th:if="${#fields.hasErrors('reference')}" th:errors="*{reference}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Home work #</label>
+                    <input th:field="*{homeWorkNumber}" type="number" class="form-control" id="homeWorkNumber"
+                           name="homeWorkNumber" placeholder="Enter a number">
+                    <p class="text-danger" th:if="${#fields.hasErrors('homeWorkNumber')}"
+                       th:errors="*{homeWorkNumber}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <input th:field="*{description}" type="text" class="form-control" id="description"
+                           name="description" placeholder="Enter home work description">
+                    <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="statuses">Statuses</label>
+                    <select class="form-control" id="statuses" name="status" required>
+                        <option th:each="status : ${statuses}"
+                                th:text="${status}"
+                                th:selected="${pr.status == status}"></option>
+                    </select>
+                </div>
+
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments/footer.html :: scripts">
+</th:block>
+
+</body>
+
+</html>
