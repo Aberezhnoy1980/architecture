@@ -3,6 +3,7 @@ package ru.aberezhnoy.handler;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
+import ru.aberezhnoy.domain.HttpResponseMethod;
 import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
@@ -11,12 +12,15 @@ import ru.aberezhnoy.service.SocketService;
 class GetMethodHandler extends MethodHandlerImpl {
 
     private final FileService fileService;
+    private final String headerKey = "Content-Type";
+    private final String headerValue = "charset=utf-8";
+    private final String body = "<H2>File not found!<H2>";
 
     public GetMethodHandler(MethodHandler next,
                             SocketService socketService,
                             ResponseSerializer responseSerializer,
                             FileService fileService) {
-        super("GET", next, socketService, responseSerializer);
+        super(String.valueOf(HttpResponseMethod.GET), next, socketService, responseSerializer);
         this.fileService = fileService;
     }
 
@@ -26,22 +30,22 @@ class GetMethodHandler extends MethodHandlerImpl {
             return HttpResponse
                     .createBuilder()
                     .setStatus(HttpResponseCode.NOT_FOUND)
-                    .setHeaders("Content-Type", "text/html; charset=utf-8")
-                    .setBody("<H2>File not found!<H2>")
+                    .setHeaders(headerKey, headerValue)
+                    .setBody(body)
                     .build();
 
         } else if (fileService.isDirectory(request.getUrl())) {
             return HttpResponse
                     .createBuilder()
                     .setStatus(HttpResponseCode.BAD_REQUEST)
-                    .setHeaders("Content-Type", "text/html; charset=utf-8")
+                    .setHeaders(headerKey, headerValue)
                     .setBody("<H2>" + fileService.readFile(request.getUrl()) + "<H2>")
                     .build();
         } else {
             return HttpResponse
                     .createBuilder()
                     .setStatus(HttpResponseCode.OK)
-                    .setHeaders("Content-Type", "text/html; charset=utf-8")
+                    .setHeaders(headerKey, headerValue)
                     .setBody("<H2>" + fileService.readFile(request.getUrl()) + "<H2>")
                     .build();
         }

@@ -3,6 +3,7 @@ package ru.aberezhnoy.handler;
 import ru.aberezhnoy.domain.HttpRequest;
 import ru.aberezhnoy.domain.HttpResponse;
 import ru.aberezhnoy.domain.HttpResponseCode;
+import ru.aberezhnoy.domain.HttpResponseMethod;
 import ru.aberezhnoy.service.FileService;
 import ru.aberezhnoy.service.ResponseSerializer;
 import ru.aberezhnoy.service.SocketService;
@@ -10,8 +11,12 @@ import ru.aberezhnoy.service.SocketService;
 @Handler(order = 2)
 class PutMethodHandler extends MethodHandlerImpl {
 
+    private final String headerKey = "Content-Type";
+    private final String headerValue = "charset=utf-8";
+    private final String body = "<H2>File not found!<H2>";
+
     public PutMethodHandler(MethodHandler next, SocketService socketService, ResponseSerializer responseSerializer, FileService fileService) {
-        super("PUT", next, socketService, responseSerializer);
+        super(String.valueOf(HttpResponseMethod.POST), next, socketService, responseSerializer);
     }
 
     @Override
